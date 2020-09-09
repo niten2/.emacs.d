@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# key: pj
+# --
+import json; print(json.dumps($0, indent=2))

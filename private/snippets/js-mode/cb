@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# key: cb
+# --
+console.log(require('util').inspect(res.body, false, null))

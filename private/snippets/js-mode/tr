@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: tr
+# key: tr
+# --
+try {
+    ${1}
+} catch (err) {
+
+};

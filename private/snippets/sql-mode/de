@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# key: de
+# --
+
+DELETE
+FROM ${}
+WHERE

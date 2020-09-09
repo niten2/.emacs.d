@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: byte
+# key: by
+# --
+
+;; -- no-byte-compile: t; --

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# key: ci
+# --
+import code; code.interact(local=vars())

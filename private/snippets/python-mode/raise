@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# key: ra
+# --
+raise Exception($0)

@@ -1,0 +1,11 @@
++ ~+default/browse-project~
++ ~+default/browse-templates~
++ ~+default/find-in-templates~
++ ~+default/browse-emacsd~
++ ~+default/find-in-emacsd~
++ ~+default/browse-notes~
++ ~+default/find-in-notes~
++ ~+default/find-in-snippets~
+
++ ~epa-pinentry-mode~ is set to ~'loopback~, forcing gpg-agent to use the Emacs
+  minibuffer when prompting for your passphrase. *Only works with GPG 2.1+!*

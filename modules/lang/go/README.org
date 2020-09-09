@@ -1,0 +1,57 @@
+* Description
+This module adds [[https://golang.org][Go]] support.
+
++ Code completion (~gocode~)
++ Documentation lookup (~godoc~)
++ Eldoc support (~go-eldoc~)
++ REPL (~gore~)
++ Syntax-checking (~flycheck~)
++ Auto-formatting on save (~gofmt~)
++ Code navigation & refactoring (~go-guru~)
++ [[../../editor/file-templates/templates/go-mode][File templates]]
++ [[https://github.com/hlissner/doom-snippets/tree/master/go-mode][Snippets]]
++ Generate testing code (~go-gen-test~)
++ Code checking (~flycheck-golangci-lint~)
+
+** Module Flags
++ =+lsp= Enables integration for the gopls LSP server.
+
+** Plugins
++ [[https://github.com/dominikh/go-mode.el][go-mode]]
++ [[https://github.com/syohex/emacs-go-eldoc][go-eldoc]]
++ [[https://github.com/dominikh/go-mode.el][go-guru]]
++ [[https://github.com/manute/gorepl-mode][gorepl-mode]]
++ [[https://github.com/brantou/emacs-go-tag][go-tag]]
++ [[https://github.com/mdempsky/gocode][company-go]]*
++ [[https://github.com/s-kostyaev/go-gen-test][go-gen-test]]
++ [[https://github.com/weijiangan/flycheck-golangci-lint][flycheck-golangci-lint]] (if =:checkers syntax= is enabled)
+
+* Prerequisites
+** Dependencies
+This module requires a valid ~GOPATH~, and the following Go packages:
+
++ ~gocode~ (for code completion & eldoc support)
++ ~godoc~ (for documentation lookup)
++ ~gorename~ (for extra refactoring commands)
++ ~gore~ (for the REPL)
++ ~guru~ (for code navigation & refactoring commands)
++ ~goimports~ (optional: for auto-formatting code on save & fixing imports)
++ ~gotests~ (for generate test code)
++ ~gomodifytags~ (for manipulating tags)
+
+#+BEGIN_SRC sh
+export GOPATH=~/work/go
+
+go get -u github.com/motemen/gore/cmd/gore
+go get -u github.com/stamblerre/gocode
+go get -u golang.org/x/tools/cmd/godoc
+go get -u golang.org/x/tools/cmd/goimports
+go get -u golang.org/x/tools/cmd/gorename
+go get -u golang.org/x/tools/cmd/guru
+go get -u github.com/cweill/gotests/...
+go get -u github.com/fatih/gomodifytags
+#+END_SRC
+
++ ~golangci-lint~ (optional: for flycheck to integrate golangci-lint results)
+  it is recommended to *not* use go get to install this one, check the
+  [[https://github.com/golangci/golangci-lint#binary-release][documentation]].

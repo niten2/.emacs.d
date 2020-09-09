@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: se
+# key: se
+# --
+
+SELECT *
+FROM ${}
+LIMIT 10
