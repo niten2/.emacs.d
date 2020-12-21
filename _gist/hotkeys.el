@@ -133,12 +133,10 @@ http://doom.wikia.com/wiki/Quit_messages and elsewhere.")
            (nth (random (length +doom-quit-messages))
                 +doom-quit-messages))))
 
-;;
 (setq confirm-kill-emacs #'+doom-quit-fn)
 
 (setq my-name "Bastien")
 (insert "Hello!")
 
-
-Uses company-quickhelp for documentation tooltips
-Uses company-statistics to order results by usage frequency
+;; Uses company-quickhelp for documentation tooltips
+;; Uses company-statistics to order results by usage frequency

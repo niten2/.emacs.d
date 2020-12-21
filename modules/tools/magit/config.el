@@ -185,4 +185,5 @@ ensure it is built when we actually use Forge."
 )
 
 ;; NOTE insert mode when commit
+;; (add-hook 'git-commit-mode-hook 'evil-insert-state)
 (add-hook 'git-commit-mode-hook 'evil-insert-state)

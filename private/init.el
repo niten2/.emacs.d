@@ -91,6 +91,7 @@
   javascript
   go
   lua
+  (haskell +dante)  ; a language that's lazier than I am
 
   (org
     +brain
@@ -120,7 +121,6 @@
   ;; fstar             ; (dependent) types and (monadic) effects and Z3
   ;; hy                ; readability of scheme w/ speed of python
   ;; idris
-  ;; (haskell +dante)  ; a language that's lazier than I am
   ;; (java +meghanada) ; the poster child for carpal tunnel syndrome
   ;; julia             ; a better, faster MATLAB
   ;; kotlin            ; a better, slicker Java(Script)

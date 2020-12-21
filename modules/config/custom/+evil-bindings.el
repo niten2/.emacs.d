@@ -467,7 +467,8 @@
         :desc "projectile-ibuffer" "i" #'projectile-ibuffer
         :desc "projectile-find-file" "f" #'projectile-find-file
         :desc "projectile-replace-regexp" "r" #'projectile-replace-regexp
-        :desc "doom/kill-other-buffers " "k" #'doom/kill-other-buffers
+        :desc "doom/kill-other-buffers" "k" #'doom/kill-other-buffers
+        :desc "projectile-invalidate-cache" "c" #'projectile-invalidate-cache
 
         ;; :desc "projectile-switch-to-buffer" "b" #'projectile-switch-to-buffer
         ;; :desc "projectile-switch-project" "p" #'projectile-switch-project

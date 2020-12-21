@@ -18,3 +18,4 @@
 (put 'projectile-ripgrep 'disabled nil)
 
 
+(put 'scroll-left 'disabled nil)
