@@ -400,9 +400,9 @@
 
         (:prefix ("o" . "open in browser")
           :desc "Browse file or region"     "o"   #'browse-at-remote
+          :desc "Browse commit"             "c"   #'forge-browse-commit
           ;; :desc "Browse homepage"           "h"   #'+vc/browse-at-remote-homepage
           ;; :desc "Browse remote"             "r"   #'forge-browse-remote
-          ;; :desc "Browse commit"             "c"   #'forge-browse-commit
           ;; :desc "Browse an issue"           "i"   #'forge-browse-issue
           ;; :desc "Browse a pull request"     "p"   #'forge-browse-pullreq
           ;; :desc "Browse issues"             "I"   #'forge-browse-issues

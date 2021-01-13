@@ -88,5 +88,8 @@ otherwise in default state."
 (defadvice! +vc--fallback-to-master-branch-a ()
   "Return 'master' in detached state."
   :after-until #'browse-at-remote--get-local-branch
-  "master"
+  ;; "master"
+  "develop"
 )
+
+(setq browse-at-remote-prefer-symbolic 'nil)
