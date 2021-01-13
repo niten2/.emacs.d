@@ -554,121 +554,148 @@ between the two."
         [remap doom/forward-to-last-non-comment-or-eol] #'org-end-of-line
 
         :localleader
-        "'" #'org-edit-special
-        "," #'org-switchb
-        "." #'org-goto
+        "." #'org-sparse-tree
+
+
+        ;; "'" #'org-edit-special
+        ;; "," #'org-switchb
+        ;; "." #'org-goto
         (:when (featurep! :completion ivy)
-          "." #'counsel-org-goto
-          "/" #'counsel-org-goto-all
-          )
+         ;; "." #'counsel-org-goto
+         "/" #'counsel-org-goto-all
+         )
 
         (:when (featurep! :completion helm)
-          "." #'helm-org-in-buffer-headings
-          ;; "/" #'helm-org-agenda-files-headings
-          )
+         "." #'helm-org-in-buffer-headings
+         ;; "/" #'helm-org-agenda-files-headings
+         )
 
-        "A" #'org-archive-subtree
-        "d" #'org-deadline
-        "e" #'org-export-dispatch
-        "f" #'org-footnote-new
         "h" #'org-toggle-heading
         "i" #'org-toggle-item
-        "I" #'org-toggle-inline-images
-        "n" #'org-store-link
-        "o" #'org-set-property
         "p" #'org-priority
         "q" #'org-set-tags-command
         "s" #'org-schedule
         "t" #'org-todo
-        "T" #'org-todo-list
+        ;; "n" #'org-store-link
+        ;; "f" #'org-footnote-new
+        ;; "d" #'org-deadline
+        ;; "I" #'org-toggle-inline-images
+        ;; "o" #'org-set-property
+        ;; "T" #'org-todo-list
+        ;; "e" #'org-export-dispatch
 
-        (:prefix ("a" . "attachments")
-          "a" #'org-attach
-          "d" #'org-attach-delete-one
-          "D" #'org-attach-delete-all
-          "f" #'+org/find-file-in-attachments
-          "l" #'+org/attach-file-and-insert-link
-          "n" #'org-attach-new
-          "o" #'org-attach-open
-          "O" #'org-attach-open-in-emacs
-          "r" #'org-attach-reveal
-          "R" #'org-attach-reveal-in-emacs
-          "u" #'org-attach-url
-          "s" #'org-attach-set-directory
-          "S" #'org-attach-sync
+        "a" #'org-archive-subtree
+        ;; (:prefix ("a" . "attachments")
+        ;;   "a" #'org-attach
+        ;;   "d" #'org-attach-delete-one
+        ;;   "D" #'org-attach-delete-all
+        ;;   "f" #'+org/find-file-in-attachments
+        ;;   "l" #'+org/attach-file-and-insert-link
+        ;;   "n" #'org-attach-new
+        ;;   "o" #'org-attach-open
+        ;;   "O" #'org-attach-open-in-emacs
+        ;;   "r" #'org-attach-reveal
+        ;;   "R" #'org-attach-reveal-in-emacs
+        ;;   "u" #'org-attach-url
+        ;;   "s" #'org-attach-set-directory
+        ;;   "S" #'org-attach-sync
 
-          (:when (featurep! +dragndrop)
-            "c" #'org-download-screenshot
-            "y" #'org-download-yank)
-          )
+        ;;   (:when (featurep! +dragndrop)
+        ;;     "c" #'org-download-screenshot
+        ;;     "y" #'org-download-yank)
+        ;;   )
 
         (:prefix ("b" . "tables")
-          "-" #'org-table-insert-hline
-          "a" #'org-table-align
-          "c" #'org-table-create-or-convert-from-region
-          "e" #'org-table-edit-field
-          "h" #'org-table-field-info
+         "-" #'org-table-insert-hline
+         "a" #'org-table-align
+         "c" #'org-table-create-or-convert-from-region
+         "e" #'org-table-edit-field
+         "h" #'org-table-field-info
 
-          (:when (featurep! +gnuplot)
-            "p" #'org-plot/gnuplot
-            )
+         (:when (featurep! +gnuplot)
+          "p" #'org-plot/gnuplot
           )
+         )
 
-        (:prefix ("c" . "clock")
-          "c" #'org-clock-in
-          "C" #'org-clock-out
-          "d" #'org-clock-mark-default-task
-          "e" #'org-clock-modify-effort-estimate
-          "E" #'org-set-effort
-          "l" #'org-clock-in-last
-          "g" #'org-clock-goto
-          "G" (λ! (org-clock-goto 'select))
-          "r" #'org-clock-report
-          "x" #'org-clock-cancel
-          "=" #'org-clock-timestamps-up
-          "-" #'org-clock-timestamps-down
-          )
+        ;; (:prefix ("c" . "clock")
+        ;;   "c" #'org-clock-in
+        ;;   "C" #'org-clock-out
+        ;;   "d" #'org-clock-mark-default-task
+        ;;   "e" #'org-clock-modify-effort-estimate
+        ;;   "E" #'org-set-effort
+        ;;   "l" #'org-clock-in-last
+        ;;   "g" #'org-clock-goto
+        ;;   "G" (λ! (org-clock-goto 'select))
+        ;;   "r" #'org-clock-report
+        ;;   "x" #'org-clock-cancel
+        ;;   "=" #'org-clock-timestamps-up
+        ;;   "-" #'org-clock-timestamps-down
+        ;;   )
 
         (:prefix ("g" . "goto")
-          "g" #'org-goto
+         "g" #'org-goto
 
-          (:when (featurep! :completion ivy)
-            "g" #'counsel-org-goto
-            "G" #'counsel-org-goto-all)
+         (:when (featurep! :completion ivy)
+          "g" #'counsel-org-goto
+          "G" #'counsel-org-goto-all)
 
-          (:when (featurep! :completion helm)
-            "g" #'helm-org-in-buffer-headings
-            ;; "G" #'helm-org-agenda-files-headings
-            )
-
-          "c" #'org-clock-goto
-          "C" (λ! (org-clock-goto 'select))
-          "i" #'org-id-goto
-          "r" #'org-refile-goto-last-stored
-          "v" #'+org/goto-visible
-          "x" #'org-capture-goto-last-stored
+         (:when (featurep! :completion helm)
+          "g" #'helm-org-in-buffer-headings
+          ;; "G" #'helm-org-agenda-files-headings
           )
+
+         ;; "c" #'org-clock-goto
+         ;; "C" (λ! (org-clock-goto 'select))
+         ;; "i" #'org-id-goto
+         ;; "r" #'org-refile-goto-last-stored
+         "v" #'+org/goto-visible
+         ;; "x" #'org-capture-goto-last-stored
+         )
 
         (:prefix ("l" . "links")
-          "c" #'org-cliplink
-          "l" #'org-insert-link
-          "L" #'org-insert-all-links
-          "s" #'org-store-link
-          "S" #'org-insert-last-stored-link
-          "i" #'org-id-store-link
-          "d" #'+org/remove-link
-          )
+         "c" #'org-cliplink
+         "l" #'org-insert-link
+         "L" #'org-insert-all-links
+         "s" #'org-store-link
+         "S" #'org-insert-last-stored-link
+         "i" #'org-id-store-link
+         "d" #'+org/remove-link
+         )
 
-        (:prefix ("r" . "refile")
-          "." #'+org/refile-to-current-file
-          "c" #'+org/refile-to-running-clock
-          "l" #'+org/refile-to-last-location
-          "f" #'+org/refile-to-file
-          "o" #'+org/refile-to-other-window
-          "O" #'+org/refile-to-other-buffer
-          "v" #'+org/refile-to-visible
-          "r" #'org-refile
-          )
+
+        (:prefix ("z" . "trello")
+         ;; "v" #'org-trello-version
+         ;; "i" #'org-trello-install-key-and-token
+         "I" #'org-trello-install-board-metadata
+         "c" #'org-trello-sync-card
+         "C" (lambda (org-trello-sync-buffer t))
+         "s" #'org-trello-sync-buffer
+         "a" #'org-trello-assign-me
+         "d" #'org-trello-check-setup
+         "D" #'org-trello-delete-setup
+         "b" #'org-trello-create-board-and-install-metadata
+         ;; "k" #'org-trello-kill-entity
+         ;; "K" #'org-trello-kill-cards
+         "a" #'org-trello-archive-card
+         "A" #'org-trello-archive-cards
+         "j" #'org-trello-jump-to-trello-card
+         "J" #'org-trello-jump-to-trello-board
+         "C" #'org-trello-add-card-comments
+         ;; "o" #'org-trello-show-card-comments
+         ;; "l" #'org-trello-show-card-labels
+         "u" #'org-trello-update-board-metadata
+         )
+
+        ;; (:prefix ("r" . "refile")
+        ;;   "." #'+org/refile-to-current-file
+        ;;   "c" #'+org/refile-to-running-clock
+        ;;   "l" #'+org/refile-to-last-location
+        ;;   "f" #'+org/refile-to-file
+        ;;   "o" #'+org/refile-to-other-window
+        ;;   "O" #'+org/refile-to-other-buffer
+        ;;   "v" #'+org/refile-to-visible
+        ;;   "r" #'org-refile
+        ;;   )
         )
 
   ;; (map! :after org-agenda
@@ -997,3 +1024,5 @@ between the two."
 ;; (define-key org-mode-map (kbd "C-'") nil)
 ;; (define-key org-mode-map (kbd "C-;") nil)
 ;; (add-hook 'org-mode #'hl-todo-mode)
+
+(setq org-tag-alist '(("#health" . ?h) ("#eng" . ?e) ("#code" . ?c) ("#invest" . ?i)))

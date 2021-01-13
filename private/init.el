@@ -61,6 +61,7 @@
   ;; grammar
 
   :tools
+
   (eval +overlay)
   lookup
   magit
