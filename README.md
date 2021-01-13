@@ -1,3 +1,3 @@
 # .emacs.d
 
-based on doom emacs
+My custom config based on doom emacs
