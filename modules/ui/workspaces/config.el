@@ -7,8 +7,8 @@
 ;;
 ;; NOTE persp-mode requires `workgroups' for file persistence in Emacs 24.4.
 
-(defvar +workspaces-main "main"
-  "The name of the primary and initial workspace, which cannot be deleted.")
+;; "The name of the primary and initial workspace, which cannot be deleted."
+(defvar +workspaces-main "main")
 
 (defvar +workspaces-switch-project-function #'doom-project-find-file
   "The function to run after `projectile-switch-project' or
@@ -215,11 +215,13 @@ stored in `persp-save-dir'.")
   (persp-def-buffer-save/load
    :mode 'eshell-mode :tag-symbol 'def-eshell-buffer
    :save-vars '(major-mode default-directory))
+
   ;; compile
   (persp-def-buffer-save/load
    :mode 'compilation-mode :tag-symbol 'def-compilation-buffer
    :save-vars
    '(major-mode default-directory compilation-directory compilation-environment compilation-arguments))
+
   ;; Restore indirect buffers
   (defvar +workspaces--indirect-buffers-to-restore nil)
   (persp-def-buffer-save/load
