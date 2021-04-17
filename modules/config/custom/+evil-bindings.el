@@ -259,7 +259,6 @@
       ;; :desc "Pop up scratch buffer" "x"    #'doom/open-scratch-buffer
       ;; :desc "Org Capture"           "X"    #'org-capture
       ;; :desc "Switch buffer"         ","    #'switch-to-buffer
-      ;; :desc "Search for symbol in project" "*" #'+default/search-project-for-symbol-at-point
       ;; :desc "Resume last search"    "'"
 
       (:when (featurep! :ui workspaces)
