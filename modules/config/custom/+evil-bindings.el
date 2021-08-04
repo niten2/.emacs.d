@@ -276,7 +276,8 @@
 
           :desc "+workspace/display"           "g" #'+workspace/display
 
-          :desc "+workspace/new" "n"   #'+workspace/new
+          :desc "+workspace/new" "n"   #'+workspace/new-c
+
           :desc "+workspace/rename" "r"   #'+workspace/rename
           :desc "+workspace/delete"     "d"   #'+workspace/delete
           :desc "+workspace/swap-left" "<" #'+workspace/swap-left
@@ -755,7 +756,15 @@
 
 ;; (when (featurep! :tools eval) (map! "M-r" #'+eval/buffer))
 
+;; NOTE custom commands
 (global-set-key (kbd "C-a") 'mark-whole-buffer)
 (global-set-key (kbd "C-s") 'save-buffer)
 (global-set-key (kbd "C-l") 'evil-window-mru)
 (global-set-key (kbd "M-b") 'other-window)
+
+(defun evil-next-line-c () (interactive) (evil-next-line) (+workspace/display))
+(defun evil-previous-line-c () (interactive) (evil-previous-line) (+workspace/display))
+(defun +workspace/new-c () (interactive) (+workspace/new) (treemacs))
+
+(evil-define-key 'normal 'global (kbd "j") 'evil-next-line-c)
+(evil-define-key 'normal 'global (kbd "k") 'evil-previous-line-c)

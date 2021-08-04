@@ -1,27 +1,20 @@
-https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html
+#+TITLE:   lang/javascript
+#+DATE:    January 16, 2017
+#+SINCE:   v2.0
+#+STARTUP: inlineimages
 
-add-node-modules-path
-company
-counsel-gtags
-dap-mode
-evil-matchit
-flycheck
-ggtags
-helm-gtags
-imenu
-impatient-mode
-import-js
-js-doc
-js2-mode
-js2-refactor
-livid-mode
-nodejs-repl
-org
-prettier-js
-skewer-mode
-tern
-web-beautify
-
+* Table of Contents :TOC:
+- [[#description][Description]]
+  - [[#module-flags][Module Flags]]
+  - [[#packages][Packages]]
+- [[#prerequisites][Prerequisites]]
+  - [[#macos][MacOS]]
+  - [[#arch-linux][Arch Linux]]
+  - [[#opensuse][openSUSE]]
+- [[#troubleshooting][Troubleshooting]]
+  - [[#tide-sort-completions-by-kind-isnt-respected][~tide-sort-completions-by-kind~ isn't respected]]
+- [[#appendix][Appendix]]
+  - [[#commands][Commands]]
 
 * Description
 This module adds JavaScript and TypeScript support.
@@ -36,15 +29,14 @@ This module adds JavaScript and TypeScript support.
 
 ** Module Flags
 + =+lsp= Enables LangServer support for this module. You must have =:tools lsp=
-  enabled for this to work, as well as the langserver
-  (e.g. typescript-language-server) installed on your system.
+  enabled for this to work, as well as the langserver (e.g.
+  typescript-language-server) installed on your system.
 
 ** Packages
 + [[https://github.com/defunkt/coffee-mode][coffee-mode]]
 + [[https://github.com/mooz/js2-mode][js2-mode]]
 + [[https://github.com/felipeochoa/rjsx-mode][rjsx-mode]]
 + [[https://github.com/emacs-typescript/typescript.el][typescript-mode]]
-+ [[https://github.com/aaronjensen/eslintd-fix][eslintd-fix]]
 + [[https://github.com/magnars/js2-refactor.el][js2-refactor]]
 + [[https://github.com/mojochao/npm-mode][npm-mode]]
 + [[https://github.com/abicky/nodejs-repl.el][nodejs-repl]]
@@ -56,10 +48,26 @@ This module adds JavaScript and TypeScript support.
 Many of this modules' plugins require ~node~ and either ~npm~ or ~yarn~
 installed.
 
+** MacOS
+#+BEGIN_SRC sh :tangle (if (doom-system-os 'macos) "yes")
+brew install node
+#+END_SRC
+
 ** Arch Linux
 #+BEGIN_SRC sh :dir /sudo:: :tangle (if (doom-system-os 'arch) "yes")
 sudo pacman --needed --noconfirm -S nodejs npm
 #+END_SRC
+
+** openSUSE
+#+BEGIN_SRC sh :dir /sudo::
+sudo zypper install nodejs npm
+#+END_SRC
+
+* Troubleshooting
+** ~tide-sort-completions-by-kind~ isn't respected
+The =:completion company= module uses =company-prescient= to sort completion by
+[[https://developer.mozilla.org/en-US/docs/Mozilla/Tech/Places/Frecency_algorithm][frecency]], which overrules specialized sorting provided by some company backends
+(like ~company-tide~).
 
 * Appendix
 ** Commands

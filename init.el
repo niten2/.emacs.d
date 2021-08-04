@@ -15,7 +15,6 @@
   (doom-initialize-modules)
 )
 
-(put 'projectile-ripgrep 'disabled nil)
-
-
 (put 'scroll-left 'disabled nil)
+(put 'projectile-ripgrep 'disabled nil)
+(put 'customize-group 'disabled nil)

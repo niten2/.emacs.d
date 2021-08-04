@@ -1,8 +1,3 @@
-#+TITLE:   tools/lsp
-#+DATE:    March 05, 2019
-#+SINCE:   v2.1
-#+STARTUP: inlineimages
-
 * Table of Contents :TOC_3:noexport:
 - [[#description][Description]]
   - [[#module-flags][Module Flags]]
@@ -11,8 +6,10 @@
 - [[#prerequisites][Prerequisites]]
 - [[#features][Features]]
   - [[#lsp-powered-project-search][LSP-powered project search]]
-- [[#configuration][Configuration]]
+  - [[#differences-between-eglot-and-lsp-mode][Differences between eglot and lsp-mode]]
 - [[#troubleshooting][Troubleshooting]]
+  - [[#my-language-server-is-not-found][My language server is not found]]
+  - [[#lspeglot-is-not-started-automatically-in-my-buffer][LSP/Eglot is not started automatically in my buffer]]
 
 * Description
 This module integrates [[https://langserver.org/][language servers]] into Doom Emacs. They provide features
@@ -100,8 +97,6 @@ which one you prefer.
 Mainly, from a code point of view, lsp-mode has a lot of custom code for UI
 (=lsp-ui-peek=, =lsp-ui-sideline=, ...), while eglot is more barebones with a
 closer integration with "more basic" emacs packages (=eldoc=, =xref=, ...).
-
-* TODO Configuration
 
 * TODO Troubleshooting
 ** My language server is not found

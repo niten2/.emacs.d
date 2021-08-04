@@ -27,3 +27,4 @@ tramp
 var/
 yas-compiled-snippets.el
 .trello
+.lsp-session-v1

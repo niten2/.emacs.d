@@ -26,7 +26,8 @@
             ("Github"            "https://github.com/search?ref=simplesearch&q=%s")
             ("Youtube"           "https://youtube.com/results?aq=f&oq=&search_query=%s")
             ("Wolfram alpha"     "https://wolframalpha.com/input/?i=%s")
-            ("Wikipedia"         "https://wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"))
+            ("Wikipedia"         "https://wikipedia.org/search-redirect.php?language=en&go=Go&search=%s")
+            ("MDN"               "https://developer.mozilla.org/en-US/search?q=%s"))
           (when (featurep! :lang rust)
             '(("Rust Docs" "https://doc.rust-lang.org/std/?search=%s"))))
   "An alist that maps online resources to either:
@@ -41,10 +42,13 @@ Used by `+lookup/online'.")
   "Function to use to open search urls.")
 
 (defvar +lookup-definition-functions
-  '(+lookup-xref-definitions-backend-fn
+  '(
+    +lookup-dictionary-definition-backend-fn
+    +lookup-xref-definitions-backend-fn
     +lookup-dumb-jump-backend-fn
     +lookup-project-search-backend-fn
     +lookup-evil-goto-definition-backend-fn)
+
   "Functions for `+lookup/definition' to try, before resorting to `dumb-jump'.
 Stops at the first function to return non-nil or change the current
 window/point.
@@ -52,7 +56,9 @@ window/point.
 If the argument is interactive (satisfies `commandp'), it is called with
 `call-interactively' (with no arguments). Otherwise, it is called with one
 argument: the identifier at point. See `set-lookup-handlers!' about adding to
-this list.")
+this list."
+
+  )
 
 (defvar +lookup-implementations-functions ()
   "Function for `+lookup/implementations' to try. Stops at the first function to
@@ -73,7 +79,8 @@ argument: the identifier at point. See `set-lookup-handlers!' about adding to
 this list.")
 
 (defvar +lookup-references-functions
-  '(+lookup-xref-references-backend-fn
+  '(+lookup-thesaurus-definition-backend-fn
+    +lookup-xref-references-backend-fn
     +lookup-project-search-backend-fn)
   "Functions for `+lookup/references' to try, before resorting to `dumb-jump'.
 Stops at the first function to return non-nil or change the current
@@ -95,7 +102,9 @@ If the argument is interactive (satisfies `commandp'), it is called with
 argument: the identifier at point. See `set-lookup-handlers!' about adding to
 this list.")
 
-(defvar +lookup-file-functions ()
+(defvar +lookup-file-functions
+  '(+lookup-bug-reference-backend-fn
+    +lookup-ffap-backend-fn)
   "Function for `+lookup/file' to try, before restoring to `find-file-at-point'.
 Stops at the first function to return non-nil or change the current
 window/point.
@@ -117,9 +126,7 @@ For `+lookup/dictionary-definition', this is ignored on Mac, where Emacs users
 Dictionary.app behind the scenes to get definitions.")
 
 
-;;
 ;;; dumb-jump
-
 (use-package! dumb-jump
   :commands dumb-jump-result-follow
   :config
@@ -151,8 +158,10 @@ Dictionary.app behind the scenes to get definitions.")
     (let ((xref-backend-functions '(etags--xref-backend t)))
       (funcall orig-fn)))
 
-  ;; Use `better-jumper' instead of xref's marker stack
-  (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a)
+  ;; This integration is already built into evil
+  (unless (featurep! :editor evil)
+    ;; Use `better-jumper' instead of xref's marker stack
+    (advice-add #'xref-push-marker-stack :around #'doom-set-jump-a))
 
   (use-package! ivy-xref
     :when (featurep! :completion ivy)
@@ -164,7 +173,16 @@ Dictionary.app behind the scenes to get definitions.")
       (setq xref-show-definitions-function #'ivy-xref-show-defs))
     ;; Necessary in Emacs <27. In Emacs 27 it will affect all xref-based
     ;; commands other than xref-find-definitions too (eg project-find-regexp)
-    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+
+    ;; HACK Fix #4386: `ivy-xref-show-xrefs' calls `fetcher' twice, which has
+    ;; side effects that breaks in some cases (i.e. on `dired-do-find-regexp').
+    (defadvice! +lookup--fix-ivy-xrefs (orig-fn fetcher alist)
+      :around #'ivy-xref-show-xrefs
+      (when (functionp fetcher)
+        (setf (alist-get 'fetched-xrefs alist)
+              (funcall fetcher)))
+      (funcall orig-fn fetcher alist)))
 
   (use-package! helm-xref
     :when (featurep! :completion helm)))
@@ -184,20 +202,6 @@ Dictionary.app behind the scenes to get definitions.")
         dash-docs-min-length 2
         dash-docs-browser-func #'eww)
 
-  ;; Before `gnutls' is loaded, `gnutls-algorithm-priority' is treated as a
-  ;; lexical variable, which breaks `+lookup*fix-gnutls-error'
-  (defvar gnutls-algorithm-priority)
-  (defadvice! +lookup--fix-gnutls-error-a (orig-fn url)
-    "Fixes integer-or-marker-p errors emitted from Emacs' url library,
-particularly, the `url-retrieve-synchronously' call in
-`dash-docs-read-json-from-url'. This is part of a systemic issue with Emacs 26's
-networking library (fixed in Emacs 27+, apparently).
-
-See https://github.com/magit/ghub/issues/81"
-    :around #'dash-docs-read-json-from-url
-    (let ((gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-      (funcall orig-fn url)))
-
   (cond ((featurep! :completion helm)
          (require 'helm-dash nil t))
         ((featurep! :completion ivy)
@@ -215,12 +219,6 @@ See https://github.com/magit/ghub/issues/81"
   (setq define-word-displayfn-alist
         (cl-loop for (service . _) in define-word-services
                  collect (cons service #'+eval-display-results-in-popup))))
-
-
-(when (featurep! +dictionary)
-  (define-key! text-mode-map
-    [remap +lookup/definition] #'+lookup/dictionary-definition
-    [remap +lookup/references] #'+lookup/synonyms))
 
 
 ;;;###package synosaurus

@@ -11,3 +11,11 @@
     (package! lsp-ivy :pin "1f6d8777a3445d23678216fe1f46475de5f4fb0e"))
   (when (featurep! :completion helm)
     (package! helm-lsp :pin "5018af9c709a783de1b9e101e07c948cceed67f1")))
+
+
+(package! lsp-sonarlint)
+(package! lsp-sonarlint-html)
+(package! lsp-sonarlint-javascript)
+(package! lsp-sonarlint-typescript)
+(package! dash)
+(package! ht)

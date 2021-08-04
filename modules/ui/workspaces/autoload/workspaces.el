@@ -476,7 +476,8 @@ the next."
     (message "%s" (+workspace--tabline))))
 
 
-;;
+(defun test-fn () (evil-indent-plus-a-indent-up-down) (+workspace/display))
+
 ;;; Hooks
 
 ;;;###autoload

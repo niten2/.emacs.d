@@ -14,3 +14,7 @@ working on that project after closing the last buffer.")
 (if (featurep! +eglot)
     (load! "+eglot")
   (load! "+lsp"))
+
+;; (setq lsp-sonarlint-javascript-enabled t)
+;; (setq lsp-sonarlint-html-enabled t)
+;; (setq lsp-sonarlint-typescript-enabled t)

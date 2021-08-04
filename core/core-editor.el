@@ -273,35 +273,30 @@ possible."
 
 ;;; Packages
 (use-package! better-jumper
-  :after-call pre-command-hook
+  :hook (doom-first-input . better-jumper-mode)
+  :commands doom-set-jump-a doom-set-jump-maybe-a doom-set-jump-h
   :preface
-
   ;; REVIEW Suppress byte-compiler warning spawning a *Compile-Log* buffer at
   ;; startup. This can be removed once gilbertw1/better-jumper#2 is merged.
   (defvar better-jumper-local-mode nil)
-
   :init
   (global-set-key [remap evil-jump-forward]  #'better-jumper-jump-forward)
   (global-set-key [remap evil-jump-backward] #'better-jumper-jump-backward)
   (global-set-key [remap xref-pop-marker-stack] #'better-jumper-jump-backward)
-
   :config
-  (better-jumper-mode +1)
-  (add-hook 'better-jumper-post-jump-hook #'recenter)
-
-  (defadvice! doom-set-jump-a (orig-fn &rest args)
+  (defun doom-set-jump-a (orig-fn &rest args)
     "Set a jump point and ensure ORIG-FN doesn't set any new jump points."
     (better-jumper-set-jump (if (markerp (car args)) (car args)))
-    (let ((evil--jumps-jumping 1)
-          (better-jumper--jumping 1))
+    (let ((evil--jumps-jumping t)
+          (better-jumper--jumping t))
       (apply orig-fn args)))
 
-  (defadvice! doom-set-jump-maybe-a (orig-fn &rest args)
+  (defun doom-set-jump-maybe-a (orig-fn &rest args)
     "Set a jump point if ORIG-FN returns non-nil."
     (let ((origin (point-marker))
           (result
-           (let* ((evil--jumps-jumping 1)
-                  (better-jumper--jumping 1))
+           (let* ((evil--jumps-jumping t)
+                  (better-jumper--jumping t))
              (apply orig-fn args))))
       (unless result
         (with-current-buffer (marker-buffer origin)

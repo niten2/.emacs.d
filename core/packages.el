@@ -45,3 +45,5 @@
 
 ;; autoload/cache.el
 (package! persistent-soft :pin "a1e0ddf2a1")
+
+(package! projectile-ripgrep)
