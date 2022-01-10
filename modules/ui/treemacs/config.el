@@ -8,6 +8,7 @@
 ;; This must be set before `treemacs' has loaded."
 (defvar +treemacs-git-mode 'simple)
 
+
 (use-package! treemacs
   :defer t
   :init
@@ -61,6 +62,7 @@
     "c r"    #'treemacs-remove-project-from-workspace
     "t k"    #'treemacs-move-project-up
     "t j"    #'treemacs-move-project-down
+    "y n"    #'er-copy-file-name-to-clipboard
   )
 )
 
@@ -72,3 +74,81 @@
   :when (featurep! :tools magit)
   :after treemacs magit
 )
+
+
+
+;; (defun treemacs-copy-absolute-path-at-point ()
+;;   "Copy the absolute path of the node at point."
+;;   (interactive)
+;;   (treemacs-block
+;;    (-let [path (treemacs--prop-at-point :path)]
+;;      (treemacs-error-return-if (null path)
+;;        "There is nothing to copy here")
+;;      (treemacs-error-return-if (not (stringp path))
+;;        "Path at point is not a file.")
+;;      (when (file-directory-p path)
+;;        (setf path (treemacs--add-trailing-slash path)))
+;;      (kill-new path)
+;;      (treemacs-pulse-on-success "Copied absolute path: %s" (propertize path 'face 'font-lock-string-face)))))
+
+
+;; ;; (defun treemacs-copy-relative-path-at-point ()
+;;   "Copy the path of the node at point relative to the project root."
+;;   (interactive)
+;;   (treemacs-block
+;;    (let ((path (treemacs--prop-at-point :path))
+;;          (project (treemacs-project-at-point)))
+;;      (treemacs-error-return-if (null path)
+;;        "There is nothing to copy here")
+;;      (treemacs-error-return-if (not (stringp path))
+;;        "Path at point is not a file.")
+;;      (when (file-directory-p path)
+;;        (setf path (treemacs--add-trailing-slash path)))
+;;      (-let [copied (-> path (file-relative-name (treemacs-project->path project)) (kill-new))]
+;;        (treemacs-pulse-on-success "Copied relative path: %s" (propertize copied 'face 'font-lock-string-face))))))
+
+
+;; (defun my/prelude-copy-filepath-clipboard ()
+;;   "Copy the current buffer file name to the clipboard."
+;;   (interactive)
+;;   (let ((filename (if (equal major-mode 'dired-mode)
+;;                       default-directory
+;;                     (buffer-file-name))))
+;;     (when filename
+;;       (kill-new filename))
+;;     (message filename)))
+
+
+;; (defun my-put-file-name-on-clipboard ()
+;;   (interactive)
+;;   (let ((filename (if (equal major-mode 'dired-mode)
+;;                       default-directory
+;;                     (buffer-file-name))))
+;;     (when filename
+;;       (with-temp-buffer
+;;         (insert filename)
+;;         (clipboard-kill-region (point-min) (point-max)))
+;;       (message filename))))
+
+;; (defun prelude-copy-file-name-to-clipboard ()
+;;   "Copy the current buffer file name to the clipboard."
+;;   (interactive)
+;;   (let ((filename (if (equal major-mode 'dired-mode)
+;;                       default-directory
+;;                     (buffer-file-name))))
+;;     (when filename
+;;       (kill-new filename)
+;;       (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+
+
+;; er-copy-file-name-to-clipboard
+
+
+
+;; (car (last (split-string "/home/q/code/github/emacs.d/modules/ui/treemacs/config.el" "\\/"))
+
+;; (-last (split-string buffer-file-name "\\/"))
+
+
+;; /home/q/code/github/emacs.d/modules/ui/treemacs/config.el

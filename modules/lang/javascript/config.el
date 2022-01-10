@@ -1,15 +1,9 @@
 ;;; lang/javascript/config.el -*- lexical-binding: t; -*-
 
-
 ;; counsel-imenu
-
 (after! projectile
   (pushnew! projectile-project-root-files "package.json")
   (pushnew! projectile-globally-ignored-directories "node_modules" "flow-typed"))
-
-
-;;
-;;; Major modes
 
 (dolist (feature '(rjsx-mode
                    typescript-mode
@@ -76,18 +70,6 @@
     ;; Indent switch-case another step
     js-switch-indent-offset js2-basic-offset)
 
-  (use-package! xref-js2
-    ;; :when (featurep! :tools lookup)
-    :init
-    (setq xref-js2-search-program 'rg)
-
-    (set-lookup-handlers! 'rjsx-mode :xref-backend #'xref-js2-xref-backend))
-
-
-
-
-
-
   ;; HACK `rjsx-electric-gt' relies on js2's parser to tell it when the cursor
   ;;      is in a self-closing tag, so that it can insert a matching ending tag
   ;;      at point. The parser doesn't run immediately however, so a fast typist
@@ -97,134 +79,6 @@
     :before #'rjsx-electric-gt
     (if (= n 1) (rjsx-maybe-reparse))))
 
-
-;; (use-package! typescript-mode
-;;   :hook (typescript-mode . rainbow-delimiters-mode)
-;;   :hook (typescript-tsx-mode . rainbow-delimiters-mode)
-;;   :commands typescript-tsx-mode
-;;   :init
-;;   ;; REVIEW We associate TSX files with `typescript-tsx-mode' derived from
-;;   ;;        `web-mode' because `typescript-mode' does not officially support
-;;   ;;        JSX/TSX. See emacs-typescript/typescript.el#4
-;;   (add-to-list 'auto-mode-alist
-;;                (cons "\\.tsx\\'"
-;;                      (if (featurep! :lang web)
-;;                          #'typescript-tsx-mode
-;;                        #'typescript-mode)))
-
-;;   (when (featurep! :checkers syntax)
-;;     (after! flycheck
-;;       (flycheck-add-mode 'javascript-eslint 'web-mode)
-;;       (flycheck-add-mode 'javascript-eslint 'typescript-mode)
-;;       (flycheck-add-mode 'javascript-eslint 'typescript-tsx-mode)
-;;       (flycheck-add-mode 'typescript-tslint 'typescript-tsx-mode)
-;;       (unless (featurep! +lsp)
-;;         (after! tide
-;;           (flycheck-add-next-checker 'typescript-tide '(warning . javascript-eslint) 'append)
-;;           (flycheck-add-mode 'typescript-tide 'typescript-tsx-mode)))
-;;       (add-hook! 'typescript-tsx-mode-hook
-;;         (defun +javascript-disable-tide-checkers-h ()
-;;           (pushnew! flycheck-disabled-checkers
-;;                     'javascript-jshint
-;;                     'tsx-tide
-;;                     'jsx-tide)))))
-;;   :config
-;;   (when (fboundp 'web-mode)
-;;     (define-derived-mode typescript-tsx-mode web-mode "TypeScript-TSX"))
-
-;;   (set-docsets! '(typescript-mode typescript-tsx-mode)
-;;                 :add "TypeScript" "AngularTS")
-;;   (set-electric! '(typescript-mode typescript-tsx-mode)
-;;     :chars '(?\} ?\))
-;;     :words '("||" "&&"))
-;;   ;; HACK Fixes comment continuation on newline
-;;   (autoload 'js2-line-break "js2-mode" nil t)
-;;   (setq-hook! 'typescript-mode-hook
-;;     comment-line-break-function #'js2-line-break
-
-;;     ;; Most projects use either eslint, prettier, .editorconfig, or tsf in order
-;;     ;; to specify indent level and formatting. In the event that no
-;;     ;; project-level config is specified (very rarely these days), the community
-;;     ;; default is 2, not 4. However, respect what is in tsfmt.json if it is
-;;     ;; present in the project
-;;     typescript-indent-level
-;;     (or (and (bound-and-true-p tide-mode)
-;;              (plist-get (tide-tsfmt-options) :indentSize))
-;;         typescript-indent-level)))
-
-
-;;
-;;; Tools
-
-;; (add-hook! '(typescript-mode-local-vars-hook
-;;              typescript-tsx-mode-local-vars-hook
-;;              web-mode-local-vars-hook
-;;              rjsx-mode-local-vars-hook)
-;;   (defun +javascript-init-lsp-or-tide-maybe-h ()
-;;     "Start `lsp' or `tide' in the current buffer.
-;;     LSP will be used if the +lsp flag is enabled for :lang javascript AND if the current buffer represents a file in a project.
-;;     If LSP fails to start (e.g. no available server or project), then we fall back to tide."
-;;     (let ((buffer-file-name (buffer-file-name (buffer-base-buffer))))
-;;       (when (derived-mode-p 'js-mode 'typescript-mode 'typescript-tsx-mode)
-;;         (if (null buffer-file-name)
-;;             ;; necessary because `tide-setup' and `lsp' will error if not a
-;;             ;; file-visiting buffer
-;;             (add-hook 'after-save-hook #'+javascript-init-lsp-or-tide-maybe-h
-;;                       nil 'local)
-;;           (or (if (featurep! +lsp) (lsp!))
-;;               ;; fall back to tide
-;;               (if (executable-find "node")
-;;                   (and (require 'tide nil t)
-;;                        (progn (tide-setup) tide-mode))
-;;                 (ignore
-;;                  (doom-log "Couldn't start tide because 'node' is missing"))))
-;;           (remove-hook 'after-save-hook #'+javascript-init-lsp-or-tide-maybe-h
-;;                        'local))))))
-
-
-(use-package! tide
-  :hook (tide-mode . tide-hl-identifier-mode)
-  :config
-  (set-company-backend! 'tide-mode 'company-tide)
-
-  ;; navigation
-  (set-lookup-handlers! 'tide-mode :async t
-    :xref-backend #'xref-tide-xref-backend
-    :documentation #'tide-documentation-at-point)
-
-  (set-popup-rule! "^\\*tide-documentation" :quit t)
-
-  (setq tide-completion-detailed t
-        tide-always-show-documentation t
-        ;; Fix #1792: by default, tide ignores payloads larger than 100kb. This
-        ;; is too small for larger projects that produce long completion lists,
-        ;; so we up it to 512kb.
-        tide-server-max-response-length 524288
-        ;; We'll handle it
-        tide-completion-setup-company-backend nil)
-
-  ;; Resolve to `doom-project-root' if `tide-project-root' fails
-  (advice-add #'tide-project-root :override #'+javascript-tide-project-root-a)
-
-  ;; Cleanup tsserver when no tide buffers are left
-  (add-hook! 'tide-mode-hook
-    (add-hook 'kill-buffer-hook #'+javascript-cleanup-tide-processes-h
-              nil 'local))
-
-  ;; Eldoc is activated too soon and disables itself, thinking there is no eldoc
-  ;; support in the current buffer, so we must re-enable it later once eldoc
-  ;; support exists. It is set *after* tide-mode is enabled, so enabling it on
-  ;; `tide-mode-hook' is too early, so...
-  (advice-add #'tide-setup :after #'eldoc-mode)
-
-  (map! :localleader
-        :map tide-mode-map
-        "R"   #'tide-restart-server
-        "f"   #'tide-format
-        "rrs" #'tide-rename-symbol
-        "roi" #'tide-organize-imports))
-
-;; TODO
 (use-package! js2-refactor
   :hook ((js2-mode rjsx-mode) . js2-refactor-mode)
   :init
@@ -308,24 +162,61 @@
 (def-project-mode! +javascript-gulp-mode
   :when (locate-dominating-file default-directory "gulpfile.js"))
 
-
 (use-package! eslint-fix
   :init
   (map! :localleader
         (:after js2-mode
          :map js2-mode-map
-          "f" (lambda () (interactive) (save-buffer) (eslint-fix))
+         "f" (lambda () (interactive) (save-buffer) (eslint-fix))
          )
         )
   )
 
-;; TODO
-;; (setq lsp-sonarlint-javascript-enabled t)
-;; (setq lsp-sonarlint-html-enabled t)
-;; (setq lsp-sonarlint-typescript-enabled t)
+(use-package! tide
+  :init
+  ;; (setq tide-tsserver-executable "node_modules/typescript/bin/tsserver")
+  (setq tide-tsserver-executable "/home/q/.nvm/versions/node/v14.16.0/bin/tsserver")
+  :hook (tide-mode . tide-hl-identifier-mode)
+  :config
+  (set-company-backend! 'tide-mode 'company-tide)
 
+  ;; lookup
+  ;; (set-lookup-handlers! 'tide-mode :async t
+  ;;   :xref-backend #'xref-tide-xref-backend
+  ;;   :documentation #'tide-documentation-at-point)
 
-;; ts
+  (set-popup-rule! "^\\*tide-documentation" :quit t)
+
+  (setq tide-completion-detailed t
+        tide-always-show-documentation t
+        ;; Fix #1792: by default, tide ignores payloads larger than 100kb. This
+        ;; is too small for larger projects that produce long completion lists,
+        ;; so we up it to 512kb.
+        tide-server-max-response-length 524288
+        ;; We'll handle it
+        tide-completion-setup-company-backend nil)
+
+  ;; Resolve to `doom-project-root' if `tide-project-root' fails
+  (advice-add #'tide-project-root :override #'+javascript-tide-project-root-a)
+
+  ;; Cleanup tsserver when no tide buffers are left
+  (add-hook! 'tide-mode-hook
+    (add-hook 'kill-buffer-hook #'+javascript-cleanup-tide-processes-h
+              nil 'local))
+
+  ;; Eldoc is activated too soon and disables itself, thinking there is no eldoc
+  ;; support in the current buffer, so we must re-enable it later once eldoc
+  ;; support exists. It is set *after* tide-mode is enabled, so enabling it on
+  ;; `tide-mode-hook' is too early, so...
+  (advice-add #'tide-setup :after #'eldoc-mode)
+
+  (map! :localleader
+        :map tide-mode-map
+        "r" #'tide-restart-server
+        ;; "f" #'tide-format
+        "s" #'tide-rename-symbol
+        "i" #'tide-organize-imports))
+
 (defun setup-tide-mode ()
   (interactive)
   (tide-setup)
@@ -333,6 +224,11 @@
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
+
+
+  (tide-enable-xref t)
+  (tide-jump-to-definition-reuse-window t)
+
   ;; company is an optional dependency. You have to
   ;; install it separately via package-install
   ;; `M-x package-install [ret] company`
@@ -341,17 +237,138 @@
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
 
-;; formats the buffer before saving
+
+;; (add-hook 'js2-mode-hook
+;;           (lambda ()
+;;             (add-hook 'before-save-hook 'format-all-buffer)))
+
+(add-hook 'typescript-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'format-all-buffer)))
+
+
+
+
 ;; (add-hook 'before-save-hook 'tide-format-before-save)
 
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
+;; (add-hook 'typescript-mode-hook #'setup-tide-mode)
+;; (add-hook 'js2-mode-hook #'setup-tide-mode)
+
+;; (add-hook 'typescript-mode-hook #'format-all-buffer)
+;; (add-hook 'js2-mode-hook #'format-all-buffer)
 
 
 
-;; (add-hook 'js2-mode-hook (lambda ()
-;;   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
 
-
+;; old
 ;; (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 ;; (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+
+
+;; NOTE lookup
+;; (use-package! xref-js2
+;;   :init
+;;   (setq xref-js2-search-program 'rg)
+;;   (set-lookup-handlers! 'js2-mode :xref-backend #'xref-js2-xref-backend nil t))
+
+
+;; (set-lookup-handlers! 'js2-mode :xref-backend #'xref-js2-xref-backend nil t)
+
+;; (set-lookup-handlers! 'go-mode
+;;   :definition #'go-guru-definition
+;;   :references #'go-guru-referrers
+;;   :documentation #'godoc-at-point)
+
+
+
+;; ;; (define-key js2-mode-map (kbd "M-.") nil)
+;; (add-hook 'js2-mode-hook (lambda () (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+;; (setq xref-js2-search-program 'ag)
+
+;; (setq lsp-sonarlint-javascript-enabled t)
+;; (setq lsp-sonarlint-html-enabled t)
+;; (setq lsp-sonarlint-typescript-enabled t)
+
+;; (use-package! typescript-mode
+;;   :hook (typescript-mode . rainbow-delimiters-mode)
+;;   :hook (typescript-tsx-mode . rainbow-delimiters-mode)
+;;   :commands typescript-tsx-mode
+;;   :init
+;;   ;; REVIEW We associate TSX files with `typescript-tsx-mode' derived from
+;;   ;;        `web-mode' because `typescript-mode' does not officially support
+;;   ;;        JSX/TSX. See emacs-typescript/typescript.el#4
+;;   (add-to-list 'auto-mode-alist
+;;                (cons "\\.tsx\\'"
+;;                      (if (featurep! :lang web)
+;;                          #'typescript-tsx-mode
+;;                        #'typescript-mode)))
+
+;;   (when (featurep! :checkers syntax)
+;;     (after! flycheck
+;;       (flycheck-add-mode 'javascript-eslint 'web-mode)
+;;       (flycheck-add-mode 'javascript-eslint 'typescript-mode)
+;;       (flycheck-add-mode 'javascript-eslint 'typescript-tsx-mode)
+;;       (flycheck-add-mode 'typescript-tslint 'typescript-tsx-mode)
+;;       (unless (featurep! +lsp)
+;;         (after! tide
+;;           (flycheck-add-next-checker 'typescript-tide '(warning . javascript-eslint) 'append)
+;;           (flycheck-add-mode 'typescript-tide 'typescript-tsx-mode)))
+;;       (add-hook! 'typescript-tsx-mode-hook
+;;         (defun +javascript-disable-tide-checkers-h ()
+;;           (pushnew! flycheck-disabled-checkers
+;;                     'javascript-jshint
+;;                     'tsx-tide
+;;                     'jsx-tide)))))
+;;   :config
+;;   (when (fboundp 'web-mode)
+;;     (define-derived-mode typescript-tsx-mode web-mode "TypeScript-TSX"))
+
+;;   (set-docsets! '(typescript-mode typescript-tsx-mode)
+;;                 :add "TypeScript" "AngularTS")
+;;   (set-electric! '(typescript-mode typescript-tsx-mode)
+;;     :chars '(?\} ?\))
+;;     :words '("||" "&&"))
+;;   ;; HACK Fixes comment continuation on newline
+;;   (autoload 'js2-line-break "js2-mode" nil t)
+;;   (setq-hook! 'typescript-mode-hook
+;;     comment-line-break-function #'js2-line-break
+
+;;     ;; Most projects use either eslint, prettier, .editorconfig, or tsf in order
+;;     ;; to specify indent level and formatting. In the event that no
+;;     ;; project-level config is specified (very rarely these days), the community
+;;     ;; default is 2, not 4. However, respect what is in tsfmt.json if it is
+;;     ;; present in the project
+;;     typescript-indent-level
+;;     (or (and (bound-and-true-p tide-mode)
+;;              (plist-get (tide-tsfmt-options) :indentSize))
+;;         typescript-indent-level)))
+
+
+;;
+;;; Tools
+
+;; (add-hook! '(typescript-mode-local-vars-hook
+;;              typescript-tsx-mode-local-vars-hook
+;;              web-mode-local-vars-hook
+;;              rjsx-mode-local-vars-hook)
+;;   (defun +javascript-init-lsp-or-tide-maybe-h ()
+;;     "Start `lsp' or `tide' in the current buffer.
+;;     LSP will be used if the +lsp flag is enabled for :lang javascript AND if the current buffer represents a file in a project.
+;;     If LSP fails to start (e.g. no available server or project), then we fall back to tide."
+;;     (let ((buffer-file-name (buffer-file-name (buffer-base-buffer))))
+;;       (when (derived-mode-p 'js-mode 'typescript-mode 'typescript-tsx-mode)
+;;         (if (null buffer-file-name)
+;;             ;; necessary because `tide-setup' and `lsp' will error if not a
+;;             ;; file-visiting buffer
+;;             (add-hook 'after-save-hook #'+javascript-init-lsp-or-tide-maybe-h
+;;                       nil 'local)
+;;           (or (if (featurep! +lsp) (lsp!))
+;;               ;; fall back to tide
+;;               (if (executable-find "node")
+;;                   (and (require 'tide nil t)
+;;                        (progn (tide-setup) tide-mode))
+;;                 (ignore
+;;                  (doom-log "Couldn't start tide because 'node' is missing"))))
+;;           (remove-hook 'after-save-hook #'+javascript-init-lsp-or-tide-maybe-h
+;;                        'local))))))

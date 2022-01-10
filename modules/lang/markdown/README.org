@@ -1,20 +1,3 @@
-* Table of Contents
-- [[#description][Description]]
-  - [[#module-flags][Module Flags]]
-  - [[#plugins][Plugins]]
-  - [[#hacks][Hacks]]
-- [[#prerequisites][Prerequisites]]
-  - [[#linters][Linters]]
-  - [[#markdown-preview][Markdown preview]]
-    - [[#markedjs][MarkedJS]]
-    - [[#pandoc][Pandoc]]
-    - [[#markdown][Markdown]]
-    - [[#multimarkdown][MultiMarkdown]]
-- [[#features][Features]]
-  - [[#markdown-preview-1][Markdown preview]]
-- [[#configuration][Configuration]]
-  - [[#changing-how-markdown-is-compiled][Changing how markdown is compiled]]
-
 * Description
 This module provides Markdown support for Emacs.
 

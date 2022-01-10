@@ -1,4 +1,4 @@
-(package! treemacs :pin "4eb8eb8821")
+(package! treemacs :pin "b572bc78daa01264a1845dc8143f7d47152faefb")
 
 (when (featurep! :editor evil +everywhere)
   (package! treemacs-evil :pin "4eb8eb8821")

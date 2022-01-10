@@ -1,3 +1,19 @@
+(defun yank-relative-filename ()
+  "Copy the current buffer file name to the clipboard."
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+(car (last (split-string buffer-file-name "\\/"))))))
+    (when filename
+      (kill-new filename)
+      (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+(defun write-file-timestamp ()
+   (interactive)
+   (let ((fname (format-time-string "%Y-%m-%d-%H-%M.md")))
+      (write-file fname t)))
+
+
 (when (featurep! :editor evil +everywhere)
   ;; Minibuffer
   (define-key! evil-ex-completion-map
@@ -280,6 +296,7 @@
 
           :desc "+workspace/rename" "r"   #'+workspace/rename
           :desc "+workspace/delete"     "d"   #'+workspace/delete
+          ;; :desc "+workspace/delete"     "d"   #'+workspace/delete-c
           :desc "+workspace/swap-left" "<" #'+workspace/swap-left
           :desc "+workspace/swap-right" ">" #'+workspace/swap-right
 
@@ -365,6 +382,8 @@
       (:prefix-map ("f" . "file")
         :desc "Recent files" "r"   #'recentf-open-files
         :desc "Yank filename" "y"   #'+default/yank-buffer-filename
+        :desc "Yank relative filename" "n"   'yank-relative-filename
+        :desc "write-file-timestamp" "w"   'write-file-timestamp
 
         ;; :desc "Locate file" "l"   #'locate
         ;; :desc "Find directory"              "d"   #'dired
@@ -399,8 +418,9 @@
           )
 
         (:prefix ("o" . "open in browser")
-          :desc "Browse file or region"     "o"   #'browse-at-remote
-          :desc "Browse commit"             "c"   #'forge-browse-commit
+          :desc "browse-at-remote" "o"   #'browse-at-remote
+          :desc "forge-browse-commit" "c"   #'forge-browse-commit
+          :desc "browse-at-remote-kill" "b"   #'browse-at-remote-kill
           ;; :desc "Browse homepage"           "h"   #'+vc/browse-at-remote-homepage
           ;; :desc "Browse remote"             "r"   #'forge-browse-remote
           ;; :desc "Browse an issue"           "i"   #'forge-browse-issue
@@ -764,7 +784,9 @@
 
 (defun evil-next-line-c () (interactive) (evil-next-line) (+workspace/display))
 (defun evil-previous-line-c () (interactive) (evil-previous-line) (+workspace/display))
-(defun +workspace/new-c () (interactive) (+workspace/new) (treemacs))
+
+(defun +workspace/new-c () (interactive) (list (+workspace/new) (treemacs) (evil-window-right 1)))
+;; (defun +workspace/delete-c () (interactive) (list (+workspace/delete) (+workspace/switch-to-final)))
 
 (evil-define-key 'normal 'global (kbd "j") 'evil-next-line-c)
 (evil-define-key 'normal 'global (kbd "k") 'evil-previous-line-c)

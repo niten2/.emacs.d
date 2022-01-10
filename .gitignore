@@ -28,3 +28,5 @@ var/
 yas-compiled-snippets.el
 .trello
 .lsp-session-v1
+.extension
+.dap-breakpoints

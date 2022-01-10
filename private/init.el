@@ -66,7 +66,7 @@
   magit
   docker
   lsp
-  ;; debugger
+  debugger
   ;; ansible
   ;; direnv
   ;; editorconfig      ; let someone else argue about tabs vs spaces

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# key: ti
+# --
+console.time(${})
+console.timeEnd(${})

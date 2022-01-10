@@ -429,9 +429,10 @@ To change these keys see `+evil-repeat-keys'."
  :nv "gc"    #'evilnc-comment-operator
 
  (:when (featurep! :tools lookup)
-   ;; :nv "K"   #'+lookup/documentation
+   :nv "gt"  #'tide-jump-to-definition
    :nv "gd"  #'+lookup/definition
-   :nv "gD"  #'+lookup/references
+   :nv "gr"  #'+lookup/references
+   :nv "gs"   #'+lookup/documentation
    :nv "gf"  #'+lookup/file
    )
 
