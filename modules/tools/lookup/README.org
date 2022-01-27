@@ -1,30 +1,3 @@
-#+TITLE:   tools/lookup
-#+DATE:    January 4, 2018
-#+SINCE:   v2.0.9
-#+STARTUP: inlineimages
-
-* Table of Contents :TOC:
-- [[#description][Description]]
-  - [[#module-flags][Module Flags]]
-  - [[#plugins][Plugins]]
-- [[#prerequisites][Prerequisites]]
-  - [[#macos][MacOS]]
-  - [[#arch-linux][Arch Linux]]
-  - [[#nixos][NixOS]]
-- [[#features][Features]]
-  - [[#jump-to-definition][Jump to definition]]
-  - [[#find-references][Find references]]
-  - [[#look-up-documentation][Look up documentation]]
-  - [[#search-a-specific-documentation-backend][Search a specific documentation backend]]
-  - [[#dashapp-docset-integration][Dash.app Docset integration]]
-- [[#configuration][Configuration]]
-  - [[#associating-lookup-handlers-with-major-modes][Associating lookup handlers with major modes]]
-  - [[#associating-dash-docsets-with-major-modes][Associating Dash docsets with major modes]]
-  - [[#open-in-eww-instead-of-browser][Open in eww instead of browser]]
-  - [[#open-in-xwidget-webkit-instead-of-browser][Open in Xwidget WebKit instead of browser]]
-- [[#appendix][Appendix]]
-  - [[#commands][Commands]]
-
 * Description
 This module adds code navigation and documentation lookup tools to help you
 quickly look up definitions, references, documentation, dictionary definitions

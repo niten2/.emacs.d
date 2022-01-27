@@ -188,7 +188,6 @@ Dictionary.app behind the scenes to get definitions.")
     :when (featurep! :completion helm)))
 
 
-;;
 ;;; Dash docset integration
 
 (use-package! dash-docs
@@ -208,7 +207,6 @@ Dictionary.app behind the scenes to get definitions.")
          (require 'counsel-dash nil t))))
 
 
-;;
 ;;; Dictionary integration
 
 (use-package! define-word

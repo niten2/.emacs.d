@@ -177,6 +177,7 @@
   ;; (setq tide-tsserver-executable "node_modules/typescript/bin/tsserver")
   (setq tide-tsserver-executable "/home/q/.nvm/versions/node/v14.16.0/bin/tsserver")
   :hook (tide-mode . tide-hl-identifier-mode)
+
   :config
   (set-company-backend! 'tide-mode 'company-tide)
 
@@ -204,10 +205,6 @@
     (add-hook 'kill-buffer-hook #'+javascript-cleanup-tide-processes-h
               nil 'local))
 
-  ;; Eldoc is activated too soon and disables itself, thinking there is no eldoc
-  ;; support in the current buffer, so we must re-enable it later once eldoc
-  ;; support exists. It is set *after* tide-mode is enabled, so enabling it on
-  ;; `tide-mode-hook' is too early, so...
   (advice-add #'tide-setup :after #'eldoc-mode)
 
   (map! :localleader
@@ -224,38 +221,54 @@
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
   (tide-hl-identifier-mode +1)
-
-
   (tide-enable-xref t)
   (tide-jump-to-definition-reuse-window t)
-
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
   (company-mode +1))
 
-;; aligns annotation to the right hand side
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+(add-hook 'js2-mode-hook #'setup-tide-mode)
 (setq company-tooltip-align-annotations t)
+
+
+;; (use-package typescript-mode
+;;   :config
+;;   (require 'dap-node)
+;;   (dap-node-setup)
+;;   (require 'indium)
+;;   (add-hook 'js-mode-hook #'indium-interaction-mode)
+;;   )
+
+;; (dap-register-debug-template "Node Attach"
+;;                              (list :type "node"
+;;                                    :port 9229
+;;                                    :request "attach"
+;;                                    :hostName "localhost"
+;;                                    :program "__ignored"
+;;                                    :name "Node::Attach"))
+
+
+
+
+;; (add-hook 'typescript-mode-hook #'format-all-buffer)
+;; (add-hook 'js2-mode-hook #'format-all-buffer)
+
+;; aligns annotation to the right hand side
 
 
 ;; (add-hook 'js2-mode-hook
 ;;           (lambda ()
 ;;             (add-hook 'before-save-hook 'format-all-buffer)))
 
-(add-hook 'typescript-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'format-all-buffer)))
+;; (add-hook 'typescript-mode-hook
+;;           (lambda ()
+;;             (add-hook 'before-save-hook 'format-all-buffer)))
 
 
 
 
 ;; (add-hook 'before-save-hook 'tide-format-before-save)
 
-;; (add-hook 'typescript-mode-hook #'setup-tide-mode)
-;; (add-hook 'js2-mode-hook #'setup-tide-mode)
 
-;; (add-hook 'typescript-mode-hook #'format-all-buffer)
-;; (add-hook 'js2-mode-hook #'format-all-buffer)
 
 
 

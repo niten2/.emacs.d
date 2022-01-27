@@ -86,4 +86,4 @@
 (when (featurep! +hugo) (package! ox-hugo :recipe (:host github :repo "kaushalmodi/ox-hugo" :nonrecursive t) :pin "16f1b0c9a9"))
 (when (featurep! :lang rst) (package! ox-rst :pin "9158bfd180"))
 
-(package! org-trello)
+;; (package! org-trello)

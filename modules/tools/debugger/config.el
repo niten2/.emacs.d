@@ -115,38 +115,53 @@
 ;;       cmd-buf)))
 
 
-(use-package dap-mode
-  ;; Uncomment the config below if you want all UI panes to be hidden by default!
-  ;; :custom
-  ;; (lsp-enable-dap-auto-configure nil)
-  ;; :config
-  ;; (dap-ui-mode 1)
+;; (use-package dap-mode
+;;   ;; Uncomment the config below if you want all UI panes to be hidden by default!
+;;   ;; :custom
+;;   ;; (lsp-enable-dap-auto-configure nil)
+;;   ;; :config
+;;   ;; (dap-ui-mode 1)
 
-  :config
-  ;; Set up Node debugging
-  (require 'dap-node)
-  (require 'dap-python)
-  (dap-node-setup)
+;;   :config
+;;   ;; Set up Node debugging
+;;   (require 'dap-node)
+;;   ;; (require 'dap-python)
+;;   (dap-node-setup)
 
-  ;; :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode))
+;;   ;; :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode))
 
-  ;; Bind `C-c l d` to `dap-hydra` for easy access
-  (general-define-key
-    :keymaps 'lsp-mode-map
-    :prefix lsp-keymap-prefix
-    "d" '(dap-hydra t :wk "debugger")))
+;;   ;; Bind `C-c l d` to `dap-hydra` for easy access
+;;   (general-define-key
+;;    :keymaps 'lsp-mode-map
+;;    :prefix lsp-keymap-prefix
+;;    "d" '(dap-hydra t :wk "debugger")))
 
-(setq dap-auto-configure-features '(sessions locals controls tooltip))
-(add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
+;; (setq dap-auto-configure-features '(sessions locals controls tooltip))
+;; (add-hook 'dap-stopped-hook (lambda (arg) (call-interactively #'dap-hydra)))
 
-(dap-register-debug-template "Python :: test"
-                             (list :type "python"
-                                   :args ""
-                                   :cwd nil
-                                   :program "/home/q/code/code/test.py"
-                                   :module nil
-                                   :request "launch"
-                                   :name "Python :: Run Configuration"))
+
+;; (dap-register-debug-template "Node Attach"
+;;                              (list :type "node"
+;;                                    :cwd nil
+;;                                    :request "attach"
+;;                                    :program nil
+;;                                    :name "Node::Attach"))
+
+;; (dap-debug
+;;  (list :type "node"
+;;        :request "attach"
+;;        :port 9229
+;;        :program "__ignored"
+;;        :name "Debug docker language server."))
+
+;; (dap-register-debug-template "Python :: test"
+;;                              (list :type "python"
+;;                                    :args ""
+;;                                    :cwd nil
+;;                                    :program "/home/q/code/code/test.py"
+;;                                    :module nil
+;;                                    :request "launch"
+;;                                    :name "Python :: Run Configuration"))
 
 ;; (dap-register-debug-template "Node Run TEST"
 ;;                              (list :type "node"
@@ -157,26 +172,39 @@
 ;;                                    :name "Node::Run"
 ;;                                    ))
 
-(dap-register-debug-template "Node Run TEST"
-                             (list :type "node"
-                                   :runtimeArgs ["-r" "esm"]
-                                   :env '(("ENVIRONMENT" . "test"))
-                                   :cwd nil
-                                   :request "launch"
-                                   :program "/home/q/_link/LuckyLinkTeam/eva-microservices-backend/node_modules/.bin/_mocha"
-                                   :sourceMaps t
-                                   :name "Node::Run"))
+;; (dap-register-debug-template "node:test"
+;;                              (list :type "node"
+;;                                    :runtimeArgs ["-r" "esm"]
+;;                                    :env '(("ENVIRONMENT" . "test"))
+;;                                    :cwd nil
+;;                                    :request "launch"
+;;                                    :program "/home/q/_link/LuckyLinkTeam/eva-microservices-backend/node_modules/.bin/_mocha"
+;;                                    :sourceMaps t
+;;                                    :name "node::test"))
 
-;; (dap-register-debug-template "TSNode2"
-;;     (list :type "node"
-;;           :request "launch"
-;;           :args ["/home/antonio/projects/opa/tsnode2/src/index.ts"]
-;;           :runtimeArgs ["-r", "ts-node/register"]
-;;           :cwd "/home/antonio/projects/opa/tsnode2"
-;;           :protocol "inspector"
-;;           :name "TsNode2"
-;;           ))
 
+; (dap-register-debug-template "node:attach"
+;;  (list :type "node"
+;;        :request "attach"
+;;        :port 9229
+;;        :program "__ignored"
+;;        :name "node:attach"))
+
+;; (dap-register-debug-template
+;;  (list :type "node"
+;;        :request "attach"
+;;        :port 9229
+;;        :program "__ignored"
+;;        :name "node:attach"))
+;; {
+;; "name": "Attach",
+;; "port": 9229,
+;; "request": "attach",
+;; "skipFiles": [
+;;               "<node_internals>/**"
+;;               ],
+;; "type": "pwa-node"
+;; },
 
 ;; (dap-register-debug-template "debug node server"
 ;;   (list :type "node"

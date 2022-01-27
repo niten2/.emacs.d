@@ -107,12 +107,9 @@ Run this for any buffer you want to skewer."
       (kill-process (tide-current-server)))))
 
 
-;;
-;; Advice
-
 ;;;###autoload
+;; "Resolve to `doom-project-root' if `tide-project-root' fails."
 (defun +javascript-tide-project-root-a ()
-  "Resolve to `doom-project-root' if `tide-project-root' fails."
   (or tide-project-root
       (or (locate-dominating-file default-directory "tsconfig.json")
           (locate-dominating-file default-directory "jsconfig.json"))

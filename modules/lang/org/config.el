@@ -662,29 +662,28 @@ between the two."
          "d" #'+org/remove-link
          )
 
-
-        (:prefix ("z" . "trello")
-         ;; "v" #'org-trello-version
-         ;; "i" #'org-trello-install-key-and-token
-         "I" #'org-trello-install-board-metadata
-         "c" #'org-trello-sync-card
-         "C" (lambda (org-trello-sync-buffer t))
-         "s" #'org-trello-sync-buffer
-         "a" #'org-trello-assign-me
-         "d" #'org-trello-check-setup
-         "D" #'org-trello-delete-setup
-         "b" #'org-trello-create-board-and-install-metadata
-         ;; "k" #'org-trello-kill-entity
-         ;; "K" #'org-trello-kill-cards
-         "a" #'org-trello-archive-card
-         "A" #'org-trello-archive-cards
-         "j" #'org-trello-jump-to-trello-card
-         "J" #'org-trello-jump-to-trello-board
-         "C" #'org-trello-add-card-comments
-         ;; "o" #'org-trello-show-card-comments
-         ;; "l" #'org-trello-show-card-labels
-         "u" #'org-trello-update-board-metadata
-         )
+        ;; (:prefix ("z" . "trello")
+        ;;  ;; "v" #'org-trello-version
+        ;;  ;; "i" #'org-trello-install-key-and-token
+        ;;  "I" #'org-trello-install-board-metadata
+        ;;  "c" #'org-trello-sync-card
+        ;;  "C" (lambda (org-trello-sync-buffer t))
+        ;;  "s" #'org-trello-sync-buffer
+        ;;  "a" #'org-trello-assign-me
+        ;;  "d" #'org-trello-check-setup
+        ;;  "D" #'org-trello-delete-setup
+        ;;  "b" #'org-trello-create-board-and-install-metadata
+        ;;  ;; "k" #'org-trello-kill-entity
+        ;;  ;; "K" #'org-trello-kill-cards
+        ;;  "a" #'org-trello-archive-card
+        ;;  "A" #'org-trello-archive-cards
+        ;;  "j" #'org-trello-jump-to-trello-card
+        ;;  "J" #'org-trello-jump-to-trello-board
+        ;;  "C" #'org-trello-add-card-comments
+        ;;  ;; "o" #'org-trello-show-card-comments
+        ;;  ;; "l" #'org-trello-show-card-labels
+        ;;  "u" #'org-trello-update-board-metadata
+        ;;  )
 
         ;; (:prefix ("r" . "refile")
         ;;   "." #'+org/refile-to-current-file

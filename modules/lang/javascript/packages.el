@@ -16,15 +16,12 @@
 (package! nodejs-repl :pin "3b841055cad00f442e4a9159b1056f59411b6646")
 (package! skewer-mode :pin "e5bed351939c92a1f788f78398583c2f83f1bb3c")
 
-;; Programming environment
 (package! tide :pin "ad6fa78911d5d7e85c0851c0c1afc01f3cbde7c1")
-
 (package! xref-js2)
 
-;; (when (featurep! :tools lookup)
-;;   (package! xref-js2 :pin "fd6b723e7f1f9793d189a815e1904364dc026b03"))
-
 (package! eslint-fix)
+
+(package! indium)
 
 ;; (package! dumb-jump)
 
@@ -32,3 +29,6 @@
 ;; (package! lsp-sonarlint-html)
 ;; (package! lsp-sonarlint-javascript)
 ;; (package! lsp-sonarlint-typescript)
+
+;; (when (featurep! :tools lookup)
+;;   (package! xref-js2 :pin "fd6b723e7f1f9793d189a815e1904364dc026b03"))
