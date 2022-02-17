@@ -500,5 +500,14 @@ testing advice (when combined with `rotate-text').
        (dolist (target (cdr targets))
          (advice-remove target #',symbol)))))
 
+(defmacro eval-when! (cond &rest body)
+  "Expands to BODY if CONDITION is non-nil at compile/expansion time.
+See `eval-if!' for details on this macro's purpose."
+  (declare (indent 1))
+  (when (eval cond)
+    (macroexp-progn body)))
+
 (provide 'core-lib)
 ;;; core-lib.el ends here
+
+

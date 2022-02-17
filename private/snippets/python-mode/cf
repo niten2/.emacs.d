@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# key: cf
+# --
+import json; print(json.dumps(childrens, sort_keys=True, indent=2))

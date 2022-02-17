@@ -1,7 +1,6 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; lang/javascript/packages.el
 
-;; Major modes
 (package! coffee-mode :pin "35a41c7d8233eac0b267d9593e67fb8b6235e134")
 (package! js2-mode :pin "29979e5f3301796ba606759e39ee0b1b6a2a24f3")
 (package! rjsx-mode :pin "b697fe4d92cc84fa99a7bcb476f815935ea0d919")
@@ -20,15 +19,11 @@
 (package! xref-js2)
 
 (package! eslint-fix)
+(package! prettier-js)
 
-(package! indium)
-
+;; (package! indium)
 ;; (package! dumb-jump)
-
 ;; (package! lsp-sonarlint)
 ;; (package! lsp-sonarlint-html)
 ;; (package! lsp-sonarlint-javascript)
 ;; (package! lsp-sonarlint-typescript)
-
-;; (when (featurep! :tools lookup)
-;;   (package! xref-js2 :pin "fd6b723e7f1f9793d189a815e1904364dc026b03"))
