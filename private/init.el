@@ -2,8 +2,8 @@
   :completion
   company
   ivy
-  ;; ido
-  ;; helm
+  ido
+  helm
 
   :ui
   doom ; themes

@@ -101,7 +101,10 @@
   (when (featurep! :editor evil +everywhere)
     (add-hook 'js2-refactor-mode-hook #'evil-normalize-keymaps)
     (let ((js2-refactor-mode-map (evil-get-auxiliary-keymap js2-refactor-mode-map 'normal t t)))
-      (js2r-add-keybindings-with-prefix (format "%s r" doom-localleader-key)))))
+      (js2r-add-keybindings-with-prefix (format "%s r" doom-localleader-key))))
+
+  (set-company-backend! 'company-tide 'company-tabnine)
+  )
 
 ;;;###package skewer-mode
 (map! :localleader
@@ -174,7 +177,7 @@
   :hook (tide-mode . tide-hl-identifier-mode)
 
   :config
-  (set-company-backend! 'tide-mode 'company-tide)
+  ;; (set-company-backend! 'tide-mode 'company-tide 'company-yasnippet 'company-tabnine)
 
   ;; lookup
   ;; (set-lookup-handlers! 'tide-mode :async t
@@ -222,10 +225,54 @@
 
 
 
-(eval-after-load 'js-mode
-  '(add-hook 'js-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
+;; (eval-after-load 'js-mode
+;;   '(add-hook 'js-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
 
-(eval-after-load 'js2-mode
-  '(add-hook 'js2-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
+;; (eval-after-load 'js2-mode
+;;   '(add-hook 'js2-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
 
 (add-hook 'typescript-mode-hook 'prettier-js-mode)
+
+
+;; (defun eslint-fix-file ()
+;;   (interactive)
+;;   (message "eslint --fixing the file" (buffer-file-name))
+;;   (shell-command (concat "eslint --fix " (buffer-file-name))))
+
+;; (defun eslint-fix-file-and-revert ()
+;;   (interactive)
+;;   (eslint-fix-file)
+;;   (revert-buffer t t))
+
+;; (add-hook 'js2-mode-hook
+;;           (lambda ()
+;;             (add-hook 'after-save-hook #'eslint-fix-file-and-revert)))
+
+
+
+;; (defun tim-eslint-fix-file ()
+;;   (interactive)
+;;   (message "eslint --fix the file" (buffer-file-name))
+;;   (call-process-shell-command
+;;    (concat "yarn eslint --fix " (buffer-file-name))
+;;    nil "*Shell Command Output*" t)
+;;   (revert-buffer t t))
+
+;; (add-hook 'js2-mode-hook
+;;           (lambda ()
+;;             (add-hook 'after-save-hook #'tim-eslint-fix-file)))
+
+;; (require 'company-tabnine)
+;; (add-to-list 'company-backends #'company-tabnine)
+;; (setq company-idle-delay 0)
+;; (setq company-show-numbers t)
+
+;; (after! js2-mode
+;;   (set-company-backend! 'js2-mode 'company-yasnippet 'company-tabnine 'company-tide))
+
+;; (after! tide-mode
+;;   (set-company-backend! 'tide-mode 'company-tide 'company-yasnippet 'company-tabnine))
+
+
+(eval-after-load "company"
+  '(add-to-list 'company-backends 'company-tabnine))

@@ -3,8 +3,9 @@
   :after-call pre-command-hook after-find-file
   :init
   (setq
+      company-minimum-prefix-length 0
       company-minimum-prefix-length 2
-      company-tooltip-limit 14
+      company-tooltip-limit 10
       company-tooltip-align-annotations t
       company-require-match 'never
 
@@ -15,17 +16,16 @@
       company-dabbrev-ignore-case nil
       company-dabbrev-code-other-buffers t
 
-      company-global-modes '(not erc-mode message-mode help-mode gud-mode eshell-mode)
+      company-global-modes '(not erc-mode message-mode help-mode gud-mode eshell-mode js2-mode)
       company-frontends '(company-pseudo-tooltip-frontend company-echo-metadata-frontend)
 
-      company-backends '(company-capf company-tabnine)
+      ;; company-backends '(company-tabnine)
   )
 
   :config
   (when (featurep! :editor evil)
     (add-hook 'company-mode-hook #'evil-normalize-keymaps)
 
-    ;; Don't persist company popups when switching back to normal mode.
     (add-hook 'evil-normal-state-entry-hook #'company-abort)
 
     ;; Allow users to switch between backends on the fly. E.g. C-x C-s followed
@@ -40,6 +40,9 @@
   (add-hook 'after-change-major-mode-hook #'+company-init-backends-h 'append)
   (global-company-mode +1)
 )
+
+;; (add-hook 'after-init-hook 'global-company-mode)
+;; (set-company-backend! 'js2-mode 'company-tide 'company-tabnine)
 
 (use-package! company-tng
   :when (featurep! +tng)

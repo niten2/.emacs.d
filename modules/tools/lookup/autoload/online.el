@@ -76,7 +76,6 @@ QUERY must be a string, and PROVIDER must be a key of
 (defvar counsel-search-engine)
 ;;;###autoload
 (defun +lookup--online-backend-google (query)
-  "Search Google, starting with QUERY, with live autocompletion."
   (cond ((fboundp 'counsel-search)
          (let ((ivy-initial-inputs-alist `((t . ,query)))
                (counsel-search-engine 'google))
@@ -90,7 +89,6 @@ QUERY must be a string, and PROVIDER must be a key of
 
 ;;;###autoload
 (defun +lookup--online-backend-duckduckgo (query)
-  "Search DuckDuckGo, starting with QUERY, with live autocompletion."
   (cond ((fboundp 'counsel-search)
          (let ((ivy-initial-inputs-alist `((t . ,query)))
                (counsel-search-engine 'ddg))

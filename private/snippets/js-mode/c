@@ -1,4 +1,4 @@
 # -*- mode: snippet -*-
 # key: c
 # --
-console.log(${})
+console.log(${});

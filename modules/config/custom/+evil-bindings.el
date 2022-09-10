@@ -155,8 +155,8 @@
 ;; company
 (map!
  (:when (featurep! :completion company)
-   :i "C-SPC"    #'+company/complete
-   ;; :i "C-@"      #'+company/complete
+   ;; :i "C-SPC"    #'+company/complete
+   :i "C-q"      #'+company/complete
 
    (:after company
      (:map company-active-map

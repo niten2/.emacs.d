@@ -2,4 +2,4 @@
 # name: cf
 # key: cf
 # --
-console.log(require('util').inspect(${}, false, null))
+console.log(require('util').inspect(${}, false, null));
